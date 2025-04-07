@@ -3,13 +3,8 @@ name: Build and Push Reqly
 on:
     push:
         branches: [dev]
-        paths:
-        - 'services/reqly/**'
-
-    pull_request:
-        branches: [dev]
-        paths:
-        - 'services/reqly/**'
+        # paths:
+        # - 'services/reqly/**'
 
 jobs:
   build-and-push:
@@ -19,11 +14,11 @@ jobs:
     - name: ⬇️ Checkout code
       uses: actions/checkout@v3
 
-    - name: 📦 Install Nixpacks
-      run: curl -fsSL https://get.nixpacks.com/install.sh | bash
-
-    - name: 🧠 Add Nixpacks to PATH
-      run: echo "${HOME}/.nixpacks/bin" >> $GITHUB_PATH
+    - name: Build and push Docker images
+      uses: iloveitaly/github-action-nixpacks@main
+      with:
+        platforms: "linux/amd64,linux/arm64"
+        push: true
 
     - name: 🚀 Build Docker image using Nixpacks
       run: |
