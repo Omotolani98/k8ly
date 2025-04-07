@@ -16,8 +16,6 @@ jobs:
 
     - name: Build and push Docker images
       uses: iloveitaly/github-action-nixpacks@main
-      with:
-        push: true
 
     - name: 🚀 Build Docker image using Nixpacks
       run: |
