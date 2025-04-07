@@ -18,7 +18,7 @@ type Config struct {
 
 func Load() Config {
 	if err := godotenv.Load("services/reqly/.env"); err != nil {
-		log.Println("⚠️  No .env file found, using system env vars")
+		log.Println("⚠️ No .env file found, using system env vars")
 	}
 
 	cfg := Config{
