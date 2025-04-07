@@ -3,13 +3,13 @@ name: Build and Push Reqly
 on:
     push:
         branches: [dev]
-        paths:
-        - 'services/reqly/**'
+        # paths:
+        # - 'services/reqly/**'
 
     pull_request:
         branches: [dev]
-        paths:
-        - 'services/reqly/**'
+        # paths:
+        # - 'services/reqly/**'
 
 jobs:
   build-and-push:
