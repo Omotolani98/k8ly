@@ -1,0 +1,43 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reqly
+  namespace: k8ly
+  labels:
+    app: reqly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reqly
+  template:
+    metadata:
+      labels:
+        app: reqly
+    spec:
+      containers:
+        - name: reqly
+          image: tolani98/reqly:latest  # Replace with image repo if pushing to registry
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4001
+          envFrom:
+            - configMapRef:
+                name: reqly-config
+            - secretRef:
+                name: reqly-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: reqly-service
+  namespace: k8ly
+spec:
+  selector:
+    app: reqly
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 4001
+  type: LoadBalancer
