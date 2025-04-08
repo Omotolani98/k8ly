@@ -14,23 +14,34 @@ jobs:
     - name: ⬇️ Checkout code
       uses: actions/checkout@v3
 
-    - name: 🔐 Log in to Docker Hub
-      run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+    - name: 📦 Install Nixpacks
+      run: curl -fsSL https://get.nixpacks.com/install.sh | bash
 
-    - name: Build and push Docker images
-      uses: iloveitaly/github-action-nixpacks@main
-      with:
-        tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
-
-
-    - name: 🚀 Build Docker image using Nixpacks
+    - name: check if Nixpacks is installed
       run: |
-        cd services/reqly
-        nixpacks build . --name ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+        if command -v nixpacks &> /dev/null
+        then
+            echo "Nixpacks is installed"
+        else
+            echo "Nixpacks is not installed"
+            exit 1
+        fi
+    
+    - name: 🧠 Add Nixpacks to PATH
+      run: echo "${HOME}/.nixpacks/bin" >> $GITHUB_PATH
+    
+    - name: 🚀 Build Docker image using Nixpacks (from services/reqly)
+      working-directory: services/reqly
+      run: nixpacks build . --name ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
 
     # - name: 🔐 Log in to Docker Hub
     #   run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-    - name: 🐳 Push image to Docker Hub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+    # - name: Build and push Docker images
+    #   uses: iloveitaly/github-action-nixpacks@main
+    #   with:
+    #     tags: |
+    #       ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+
+    # - name: 🐳 Push image to Docker Hub
+    #   run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
