@@ -14,25 +14,16 @@ jobs:
     - name: ⬇️ Checkout code
       uses: actions/checkout@v3
 
-    - name: 📦 Install Nixpacks
-      run: curl -fsSL https://get.nixpacks.com/install.sh | bash
-
-    - name: check if Nixpacks is installed
-      run: |
-        if command -v nixpacks &> /dev/null
-        then
-            echo "Nixpacks is installed"
-        else
-            echo "Nixpacks is not installed"
-            exit 1
-        fi
-    
-    - name: 🧠 Add Nixpacks to PATH
-      run: echo "${HOME}/.nixpacks/bin" >> $GITHUB_PATH
-    
-    - name: 🚀 Build Docker image using Nixpacks (from services/reqly)
-      working-directory: services/reqly
-      run: nixpacks build . --name ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+    - name: 📦 Build and Push using Nixpacks
+      uses: railwayapp/nixpacks-action@v1
+      with:
+        path: services/reqly
+        name: ${{ secrets.DOCKERHUB_USERNAME }}/reqly
+        tag: latest
+        push: true
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
 
     # - name: 🔐 Log in to Docker Hub
     #   run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
