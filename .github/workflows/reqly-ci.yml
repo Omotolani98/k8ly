@@ -21,7 +21,7 @@ jobs:
       uses: iloveitaly/github-action-nixpacks@main
       with:
         tags: |
-          ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:reqly-latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
 
 
     - name: 🚀 Build Docker image using Nixpacks
