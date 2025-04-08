@@ -27,8 +27,8 @@ jobs:
       - name: Build Docker image with Nixpacks
         run: |
           cd services/reqly
-          nixpacks build . --name reqly-app --docker-registry docker.io --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:${{ github.sha }}
-          nixpacks build . --name reqly-app --docker-registry docker.io --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+          nixpacks build . --name k8ly/reqly --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:${{ github.sha }}
+          nixpacks build . --name k8ly/reqly --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
 
       - name: Push Docker image
         run: |
