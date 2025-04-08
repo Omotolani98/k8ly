@@ -20,7 +20,9 @@ jobs:
     - name: Build and push Docker images
       uses: iloveitaly/github-action-nixpacks@main
       with:
-        tag: latest
+        tags: |
+          ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.repository }}:reqly-latest
+
 
     - name: 🚀 Build Docker image using Nixpacks
       run: |
