@@ -5,26 +5,35 @@ on:
         branches: [dev]
         # paths:
         # - 'services/reqly/**'
+    workflow_dispatch:
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-
     steps:
-    - name: ⬇️ Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: 📦 Build and Push using Nixpacks
-      uses: railwayapp/nixpacks-action@v1
-      with:
-        path: services/reqly
-        name: ${{ secrets.DOCKERHUB_USERNAME }}/reqly
-        tag: latest
-        push: true
-      env:
-        DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-        DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Setup Nixpacks
+        run: |
+          curl -sSL https://nixpacks.com/install.sh | bash
+
+      - name: Build Docker image with Nixpacks
+        run: |
+          cd services/reqly
+          nixpacks build . --name reqly-app --docker-registry docker.io --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:${{ github.sha }}
+          nixpacks build . --name reqly-app --docker-registry docker.io --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reqly:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
     # - name: 🔐 Log in to Docker Hub
     #   run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
