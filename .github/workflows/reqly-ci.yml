@@ -14,12 +14,17 @@ jobs:
     - name: ⬇️ Checkout code
       uses: actions/checkout@v3
 
-    - name: Build and push Docker images
-      uses: iloveitaly/github-action-nixpacks@main
+    - name: Build and push Docker images    
+      uses: railwayapp/nixpacks-action@v1
       with:
-        tag: ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
-        cache: true
-        cache_tag: ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+        path: services/reqly
+        builder: nixpacks
+        name: ${{ secrets.DOCKERHUB_USERNAME }}/reqly
+        tag: latest
+        push: true
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKERHUB_TOKEN }}
 
     - name: 🚀 Build Docker image using Nixpacks
       run: |
