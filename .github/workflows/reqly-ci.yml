@@ -17,6 +17,7 @@ jobs:
     - name: Build and push Docker images
       uses: iloveitaly/github-action-nixpacks@main
       with:
+        tag: ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
         cache: true
         cache_tag: ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
 
