@@ -1,0 +1,43 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authly
+  namespace: k8ly
+  labels:
+    app: authly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: authly
+  template:
+    metadata:
+      labels:
+        app: authly
+    spec:
+      containers:
+        - name: authly
+          image: tolani98/authly:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4002
+          envFrom:
+            - configMapRef:
+                name: authly-config
+            - secretRef:
+                name: authly-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: authly-service
+  namespace: k8ly
+spec:
+  selector:
+    app: authly
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 4002
+  type: LoadBalancer
