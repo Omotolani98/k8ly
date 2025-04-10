@@ -1,4 +1,4 @@
-name: Build and Push Reqly
+name: Build and Push Logly
 
 on:
     push:
@@ -24,11 +24,11 @@ jobs:
 
       - name: Build Docker image with Nixpacks
         run: |
-          cd services/reqly
-          nixpacks build . --name k8ly/reqly --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:${{ github.sha }}
-          nixpacks build . --name k8ly/reqly --tag ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+          cd services/logly
+          nixpacks build . --name k8ly/logly --tag ${{ secrets.DOCKERHUB_USERNAME }}/logly:${{ github.sha }}
+          nixpacks build . --name k8ly/logly --tag ${{ secrets.DOCKERHUB_USERNAME }}/logly:latest
 
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reqly:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/reqly:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/logly:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/logly:latest

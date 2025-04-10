@@ -1,0 +1,43 @@
+# k8s/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: logly
+  namespace: k8ly
+  labels:
+    app: logly
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: logly
+  template:
+    metadata:
+      labels:
+        app: logly
+    spec:
+      containers:
+        - name: logly
+          image: tolani98/logly:latest  # Replace with image repo if pushing to registry
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4002
+          envFrom:
+            - configMapRef:
+                name: logly-config
+            - secretRef:
+                name: logly-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: logly-service
+  namespace: k8ly
+spec:
+  selector:
+    app: logly
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 4002
+  type: LoadBalancer

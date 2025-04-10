@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: k8ly-ingress
+  namespace: k8ly
+  annotations:
+    kubernetes.io/ingress.class: caddy
+spec:
+  ingressClassName: caddy
+  rules:
+    - host: reqly.k8ly.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: reqly-service
+                port:
+                  number: 80
+    - host: logly.k8ly.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: logly-service
+                port:
+                  number: 80
