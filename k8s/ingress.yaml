@@ -5,6 +5,7 @@ metadata:
   namespace: k8ly
   annotations:
     kubernetes.io/ingress.class: caddy
+    caddy.ingress.kubernetes.io/disable-tls: "true"
 spec:
   ingressClassName: caddy
   rules:
@@ -17,7 +18,7 @@ spec:
               service:
                 name: reqly-service
                 port:
-                  number: 80
+                  number: 8081
     - host: logly.k8ly.io
       http:
         paths:
@@ -27,4 +28,14 @@ spec:
               service:
                 name: logly-service
                 port:
-                  number: 80
+                  number: 8082
+    - host: authly.k8ly.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: authly-service
+                port:
+                  number: 8083

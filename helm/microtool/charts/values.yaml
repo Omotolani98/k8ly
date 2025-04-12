@@ -1,0 +1,21 @@
+name: microtool
+replicaCount: 1
+
+image:
+  repository: your-dockerhub-username/microtool
+  tag: latest
+
+service:
+  port: 8080
+
+config:
+  PORT: "8080"
+  DB_HOST: "localhost"
+  DB_USER: "postgres"
+  DB_NAME: "microtool"
+
+secret:
+  DB_PASSWORD: "password"
+
+ingress:
+  host: microtool.k8ly.io

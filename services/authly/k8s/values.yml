@@ -1,0 +1,20 @@
+name: authly
+replicaCount: 1
+image:
+  repository: tolani98/authly
+  tag: latest
+
+service:
+  port: 8001
+
+config:
+  PORT: "4001"
+  DB_HOST: "host.docker.internal"
+  DB_USER: "doye"
+  DB_NAME: "authly"
+
+secret:
+  DB_PASSWORD: "tolani"
+
+ingress:
+  host: authly.k8ly.io

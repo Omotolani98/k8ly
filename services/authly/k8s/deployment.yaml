@@ -21,7 +21,7 @@ spec:
           image: tolani98/authly:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 4002
+            - containerPort: 4003
           envFrom:
             - configMapRef:
                 name: authly-config
@@ -38,6 +38,6 @@ spec:
     app: authly
   ports:
     - protocol: TCP
-      port: 8081
-      targetPort: 4002
+      port: 8083
+      targetPort: 4003
   type: LoadBalancer
