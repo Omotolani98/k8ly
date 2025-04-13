@@ -4,6 +4,7 @@ project_name: k8ly
 builds:
   - id: k8ly-cli
     main: ./cli/main.go
+    dir: ./cli
     binary: k8ly
     goos:
       - linux
