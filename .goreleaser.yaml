@@ -25,8 +25,9 @@ release:
   github:
     owner: Omotolani98
     name: k8ly
-  disable:
-    - validate_git_dirty
+
+disable:
+  - validate_git_dirty
 
 changelog:
   sort: asc
