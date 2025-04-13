@@ -1,0 +1,30 @@
+version: 2
+
+project_name: k8ly
+builds:
+  - id: k8ly-cli
+    main: ./cli/main.go
+    binary: k8ly
+    goos:
+      - linux
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE
+      - README.md
+      - k8ly
+
+release:
+  github:
+    owner: Omotolani98
+    name: k8ly
+
+changelog:
+  sort: asc
+
