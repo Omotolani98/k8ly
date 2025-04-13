@@ -19,7 +19,8 @@ if [ "$VERSION" = "latest" ]; then
   VERSION=$(curl -s https://api.github.com/repos/${REPO}/releases/latest | grep tag_name | cut -d '"' -f 4)
 fi
 
-TARBALL="k8ly_${VERSION}_${OS}_${ARCH}.tar.gz"
+VERSION_NO_V="${VERSION#v}"
+TARBALL="k8ly_${VERSION_NO_V}_${OS}_${ARCH}.tar.gz"
 URL="https://github.com/${REPO}/releases/download/${VERSION}/${TARBALL}"
 
 echo "⬇️ Downloading $TARBALL..."
@@ -52,3 +53,4 @@ rm "$TARBALL"
 
 echo "✅ K8ly $VERSION installed!"
 echo "👉 Restart your shell or run 'source ~/.bashrc' if needed"
+
