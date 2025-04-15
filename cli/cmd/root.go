@@ -3,6 +3,7 @@ package cmd
 import (
   "fmt"
   "github.com/spf13/cobra"
+  "github.com/Omotolani98/k8ly/cli/core"
 )
 
 var rootCmd = &cobra.Command{
@@ -16,5 +17,6 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() error {
+  core.ShowBanner()
   return rootCmd.Execute()
 }
