@@ -6,6 +6,8 @@ builds:
     main: ./main.go
     dir: ./cli
     binary: k8ly
+    ldflags:
+      - "-s -w -X main.version={{ .Version }}"
     goos:
       - linux
       - darwin
@@ -30,9 +32,6 @@ release:
   github:
     owner: Omotolani98
     name: k8ly
-
-ldflags:
-  - "-s -w -X main.version={{ .Version }}"
 
 changelog:
   sort: asc
