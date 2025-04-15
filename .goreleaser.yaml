@@ -31,6 +31,8 @@ release:
     owner: Omotolani98
     name: k8ly
 
+ldflags:
+  - "-s -w -X main.version={{ .Version }}"
 
 changelog:
   sort: asc
