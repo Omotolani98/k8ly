@@ -23,11 +23,23 @@ func runCaddy() error {
 
   // Try to reload caddy if already running
   reload := exec.Command("caddy", "reload", "--config", caddyfilePath)
+	reload.Stdout = os.Stdout
+	reload.Stderr = os.Stderr
+
   if err := reload.Run(); err != nil {
+    fmt.Println("🔄 Caddy reloaded successfully")
     return nil // reload succesfully
   }
 
+  // If reload fails, check if Caddy is already running (to avoid port conflict)
+	check := exec.Command("pgrep", "caddy")
+	if err := check.Run(); err == nil {
+		fmt.Println("⚠️ Caddy is already running. Skipping 'caddy run'")
+		return nil
+	}
+
   // Else, start in the background
+  fmt.Println("🚀 Starting Caddy server...")
   start := exec.Command("caddy", "run", "--config", caddyfilePath, "--adapter", "caddyfile")
   start.Stdout = os.Stdout
   start.Stderr = os.Stderr

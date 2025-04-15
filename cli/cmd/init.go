@@ -32,16 +32,16 @@ var initCmd = &cobra.Command{
       HostMode: hostMode,
     }
 
-    fmt.Println("🚀 Initializing K8ly environment...")
+    core.PrintSection("🚀 Initializing K8ly environment...")
 
     if err := core.InitializeHost(cfg); err != nil {
-      fmt.Println("❌ Initialization failed: ", err)
+      fmt.Errorf("❌ Initialization failed: ", err)
       return
     }
 
-    fmt.Println("✅ K8ly environment initialized successfully.")
-    fmt.Println("🌐 Domain: ", cfg.Domain)
-    fmt.Println("🔧 Provider: ", cfg.Provider)
+    core.PrintSuccess("K8ly environment initialized successfully.")
+    core.PrintSuccess("🌐 Domain: " + cfg.Domain)
+    core.PrintSuccess("🔧 Provider: " + cfg.Provider)
 
     if cfg.HostMode {
       fmt.Println("🔐 Host mode: enabled (API token generated)")
