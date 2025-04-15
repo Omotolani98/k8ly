@@ -16,6 +16,8 @@ var rootCmd = &cobra.Command{
   },
 }
 
+var Version string
+
 func Execute() error {
   core.ShowBanner()
   return rootCmd.Execute()

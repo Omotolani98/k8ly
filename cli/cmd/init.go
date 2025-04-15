@@ -15,6 +15,15 @@ var (
   hostMode bool
 )
 
+// versionCmd handles `k8ly version`
+var versionCmd = &cobra.Command{
+	Use:   "version",
+	Short: "Print the K8ly CLI version",
+	Run: func(cmd *cobra.Command, args []string) {
+		fmt.Printf("🧩 K8ly CLI version: %s\n", Version)
+	},
+}
+
 // InitCmd handles `k8ly init`
 var initCmd = &cobra.Command{
   Use: "init",
@@ -51,6 +60,7 @@ var initCmd = &cobra.Command{
 
 func init() {
   rootCmd.AddCommand(initCmd)
+  rootCmd.AddCommand(versionCmd)
 
   initCmd.Flags().StringVar(&domain, "domain", "", "Base domain for hosted tools (e.g. k8ly.dev)")
   initCmd.Flags().StringVar(&email, "email", "", "Email for Ler's Encrypt TLS")
