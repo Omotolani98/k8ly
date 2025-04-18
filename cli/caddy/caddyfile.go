@@ -9,10 +9,7 @@ import (
 
 // WriteCaddyfile creates a basic wildcard domain config
 func WriteCaddyfile(domain, email string) error {
-  caddyfile := fmt.Sprintf(`*.%s {
-    tls %s
-    reverse_proxy * 127.0.0.1:3000
-  }`, domain, email)
+  caddyfile := fmt.Sprintf("# K8ly reverse proxy entries will be added per tool under .%s\n", domain)
 
   home, _ := os.UserHomeDir()
   dir := filepath.Join(home, ".k8ly")

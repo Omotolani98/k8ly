@@ -21,6 +21,15 @@ func Setup(domain, email string) error {
 func runCaddy() error {
   caddyfilePath := getCaddyfilePath()
 
+  // format Caddyfile with `fmt`
+  formatCaddyfile := exec.Command("caddy", "fmt", caddyfilePath, "--overwrite")
+  formatCaddyfile.Stdout = os.Stdout
+  formatCaddyfile.Stderr = os.Stderr
+
+  if err := formatCaddyfile.Run(); err != nil {
+    fmt.Println("✅ Caddyfile formatted successfully")
+  }
+
   // Try to reload caddy if already running
   reload := exec.Command("caddy", "reload", "--config", caddyfilePath)
 	reload.Stdout = os.Stdout
