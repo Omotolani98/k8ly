@@ -4,6 +4,7 @@ import (
   "fmt"
   "github.com/Omotolani98/k8ly/cli/config"
   "github.com/Omotolani98/k8ly/cli/caddy"
+  "github.com/Omotolani98/k8ly/cli/deployer"
   "os"
   "os/exec"
 )
@@ -33,7 +34,20 @@ func DeployApp(appName string, port int, vm string, cfg *config.K8lyConfig) erro
         fmt.Println("🔥 Firecracker deployment is not implemented yet.")
         return nil
     case "k8s", "kubernetes":
-        fmt.Println("☸️ Kubernetes deployment is not implemented yet.")
+        fmt.Println("☸️ Deploying to Kubernetes...")
+
+        err := deployer.DeployToKubernetes(deployer.K8sDeployOptions {
+          AppName: appName,
+          Port:    port,
+          Domain:  cfg.Domain,
+          Image:   imageName,
+        })
+
+        if err != nil {
+          return fmt.Errorf("k8s deployment failed: %w", err)
+        }
+
+        // Skip Caddy for now if you plan to use Ingress
         return nil
     default:
         return fmt.Errorf("unsupported runtime: %s", provider)
