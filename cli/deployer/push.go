@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"strings" // NEW
+	"strings"
 
 	"github.com/Omotolani98/k8ly/cli/registry"
 )
@@ -22,19 +22,16 @@ type PushOptions struct {
 	Auth         registry.Auth
 }
 
-// pushImage builds, tags, and uploads the tarball to the chosen registry.
-// It returns the full image reference (host/repo:tag) on success.
+// PushImage pushes a built image to a registry.
 func PushImage(opts PushOptions) (string, error) {
 	fullRef := fmt.Sprintf("%s/%s:%s", opts.RegistryHost, opts.Repo, opts.Tag)
 
-	// 1) docker tag
 	if err := exec.Command("docker", "tag",
 		opts.ImageName+":latest", fullRef,
 	).Run(); err != nil {
 		return "", fmt.Errorf("docker tag failed: %w", err)
 	}
 
-	// 2) docker save → /tmp/xxxx.tar
 	safeRepo := strings.ReplaceAll(opts.Repo, "/", "_")
 	tmpTar := filepath.Join(os.TempDir(),
 		fmt.Sprintf("%s-%d.tar", safeRepo, time.Now().Unix()))
@@ -46,13 +43,11 @@ func PushImage(opts PushOptions) (string, error) {
 	}
 	defer os.Remove(tmpTar)
 
-	// 3) pick driver
 	driver, err := registry.New(opts.RegistryHost)
 	if err != nil {
 		return "", err
 	}
 
-	// 4) login + push
 	ctx := context.Background()
 	if err := driver.Login(ctx, opts.Auth); err != nil {
 		return "", err

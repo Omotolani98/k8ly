@@ -12,9 +12,8 @@ func New(host string) (Registry, error) {
 		return &DockerHub{}, nil
 	case strings.Contains(host, "ghcr.io"):
 		return &GHCR{}, nil
-	// case strings.Contains(host, "amazonaws.com"):
-	// 	return &ECR{}, nil
-	// TODO: add GCR/ACR
+	case strings.Contains(host, "amazonaws.com"):
+		return &ECR{}, nil
 	default:
 		return nil, fmt.Errorf("unsupported registry: %s", host)
 	}

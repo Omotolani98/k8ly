@@ -3,6 +3,7 @@ package registry
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/google/go-containerregistry/pkg/authn"
 	"github.com/google/go-containerregistry/pkg/crane"
@@ -13,14 +14,17 @@ type GHCR struct{}
 
 func (g *GHCR) Login(_ context.Context, a Auth) error {
 	if a.Token == "" {
-		return fmt.Errorf("ghcr: missing token (GITHUB_TOKEN)")
+		// allow token via env so CLI flag isn't required
+		a.Token = os.Getenv("GITHUB_TOKEN")
 	}
-	// ghcr requires no explicit docker login when using crane, so no‑op.
-	return nil
+	if a.Token == "" {
+		return fmt.Errorf("ghcr: missing token (set GITHUB_TOKEN env or --password)")
+	}
+	return nil // crane will inject auth later
 }
 
-func (g *GHCR) Push(ctx context.Context, imageTar, dest string) error {
-	img, err := crane.Load(imageTar)
+func (g *GHCR) Push(ctx context.Context, tarPath, dest string) error {
+	img, err := crane.Load(tarPath)
 	if err != nil {
 		return err
 	}
@@ -29,8 +33,8 @@ func (g *GHCR) Push(ctx context.Context, imageTar, dest string) error {
 		return err
 	}
 	auth := authn.FromConfig(authn.AuthConfig{
-		Username: "ghcr", // any non‑empty string
-		Password: "",
+		Username: "ghcr", // any
+		Password: os.Getenv("GITHUB_TOKEN"),
 	})
 	return crane.Push(img, ref.Name(), crane.WithAuth(auth))
 }
