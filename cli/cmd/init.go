@@ -8,7 +8,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// CLI Flags
 var (
 	domain   string
 	email    string
@@ -16,7 +15,6 @@ var (
 	hostMode bool
 )
 
-// versionCmd handles `k8ly version`
 var versionCmd = &cobra.Command{
 	Use:   "version",
 	Short: "Print the K8ly CLI version",
@@ -25,7 +23,6 @@ var versionCmd = &cobra.Command{
 	},
 }
 
-// InitCmd handles `k8ly init`
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initialize k8ly host environment",
