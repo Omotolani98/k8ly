@@ -1,0 +1,13 @@
+flowchart LR
+    subgraph k8ly-cli
+        B(Nixpacks build<br/>→ image.tar)
+        R(Registry Router)
+        style R fill:#FFF5
+        classDef registry fill:#E0E9FF,stroke:#5B7
+        D(Docker Hub):::registry
+        G(GHCR):::registry
+        E(ECR):::registry
+        A(ACR/GCR …):::registry
+    end
+    B -- image.tar --> R
+    R -- interface push() --> D & G & E & A
