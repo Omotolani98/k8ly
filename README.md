@@ -23,7 +23,7 @@ K8ly ( **k‑eight‑lee** ) is a lightweight, batteries‑included developer to
 ```bash
 
 # 1. Install (Linux/macOS)
-curl -sSL https://get.k8ly.dev | bash
+curl -sSL https://omotolani98.github.io/k8ly/selfhost.sh | bash
 
 # 2. Initialise a project (one‑off)
 k8ly init
